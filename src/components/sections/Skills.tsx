@@ -34,13 +34,12 @@ export function Skills() {
                   {cat.label}
                 </h3>
               </div>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3 sm:gap-4">
                 {catSkills.map((skill) => (
                   <div key={skill.name} className="flex flex-col items-center gap-2 group cursor-pointer" title={skill.name}>
-                    <div className="flex items-center justify-center w-[4.5rem] h-[4.5rem] rounded-xl bg-[#0f1115] border border-white/5 shadow-inner transition-transform duration-300 group-hover:scale-110 group-hover:shadow-[var(--shadow-hover)]">
-                      <i className={`${skill.icon} colored text-5xl drop-shadow-sm`}></i>
+                    <div className="flex items-center justify-center w-12 h-12 sm:w-[4.5rem] sm:h-[4.5rem] rounded-xl bg-[#0f1115] border border-white/5 shadow-inner transition-transform duration-300 group-hover:scale-110 group-hover:shadow-[var(--shadow-hover)]">
+                      <i className={`${skill.icon} colored text-[2rem] sm:text-5xl drop-shadow-sm`}></i>
                     </div>
-                    {/* Optional label if needed: <span className="text-xs font-medium text-[var(--color-text-secondary)]">{skill.name}</span> */}
                   </div>
                 ))}
               </div>

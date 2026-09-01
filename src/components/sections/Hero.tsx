@@ -29,7 +29,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-bg-primary)] via-transparent to-[var(--color-bg-primary)] pointer-events-none" />
 
       <Container>
-        <div className="relative z-10 pt-28 pb-20 lg:pt-36 lg:pb-28 max-w-4xl animate-on-scroll">
+        <div className="relative z-10 pt-20 pb-16 sm:pt-28 sm:pb-20 lg:pt-36 lg:pb-28 max-w-4xl animate-on-scroll">
 
           {/* ── Availability pill ── */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 mb-8 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-card)] text-label-sm text-[var(--color-text-muted)]">
@@ -48,7 +48,7 @@ export function Hero() {
           </p>
 
           {/* ── Tagline ── */}
-          <p className="mt-5 text-body-lg text-[var(--color-text-secondary)] max-w-2xl leading-relaxed">
+          <p className="mt-6 text-body-lg text-[var(--color-text-muted)] max-w-2xl">
             {personalInfo.tagline}
           </p>
 
@@ -59,11 +59,11 @@ export function Hero() {
           </div>
 
           {/* ── CTAs ── */}
-          <div className="mt-10 flex flex-col sm:flex-row items-start gap-3">
-            <Button href="#projects" variant="primary" size="lg">
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-start gap-3 w-full sm:w-auto">
+            <Button href="#projects" variant="primary" size="lg" className="w-full sm:w-auto">
               Lihat Proyek
             </Button>
-            <Button href="#contact" variant="secondary" size="lg">
+            <Button href="#contact" variant="secondary" size="lg" className="w-full sm:w-auto">
               Hubungi Saya
             </Button>
           </div>

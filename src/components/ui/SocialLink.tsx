@@ -48,10 +48,12 @@ export function SocialLink({ link, size = 18 }: SocialLinkProps) {
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#0f1115] border border-white/5 shadow-inner hover:scale-110 hover:shadow-[var(--shadow-hover)] transition-all duration-300"
+      className="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-[#0f1115] border border-white/5 shadow-inner hover:scale-110 hover:shadow-[var(--shadow-hover)] transition-all duration-300"
       aria-label={`Kunjungi profil ${link.platform}`}
     >
-      {IconComponent ? <IconComponent size={24} /> : <Link size={24} />}
+      <div className="scale-90 sm:scale-100 flex items-center justify-center">
+        {IconComponent ? <IconComponent size={24} /> : <Link size={24} />}
+      </div>
     </a>
   );
 }

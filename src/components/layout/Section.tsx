@@ -23,7 +23,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`py-24 lg:py-32 animate-on-scroll ${className}`}
+      className={`py-16 md:py-24 lg:py-32 animate-on-scroll ${className}`}
       aria-labelledby={title ? `${id}-heading` : undefined}
     >
       <Container>
