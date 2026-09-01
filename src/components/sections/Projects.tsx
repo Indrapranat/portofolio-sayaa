@@ -26,7 +26,7 @@ export function Projects() {
 
       <div className="mt-12">
         <Button
-          href="https://github.com/indra7dev"
+          href="https://github.com/Indrapranat"
           variant="secondary"
           size="md"
           external

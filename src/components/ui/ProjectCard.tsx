@@ -3,6 +3,7 @@
    White card, 1px border, ultra-low shadow.
    Hover: border strengthens, shadow lifts slightly.
    ============================================================ */
+import Image from "next/image";
 import { ExternalLink, CodeXml } from "lucide-react";
 import { Badge } from "./Badge";
 import type { Project } from "@/types";
@@ -31,11 +32,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
       {/* ── Image Placeholder ── */}
       {project.imageUrl && (
         <div className="relative aspect-video bg-[var(--color-bg-tertiary)] overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center text-[var(--color-text-muted)]">
-            <span className="text-xs text-label-sm tracking-wider uppercase">
-              Project Preview
-            </span>
-          </div>
+          <Image 
+            src={project.imageUrl} 
+            alt={project.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100" 
+          />
           {project.status && (
             <div className="absolute top-3 right-3">
               <Badge variant="default">

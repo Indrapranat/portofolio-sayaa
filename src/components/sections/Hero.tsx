@@ -1,7 +1,10 @@
+"use client";
+
 /* ============================================================
    Hero Section — Studio Teknis Modern
    Clean, editorial, whitespace-dominant hero.
    ============================================================ */
+import { useState, useRef, MouseEvent } from "react";
 import { ArrowDown, MapPin } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/Button";
@@ -9,12 +12,46 @@ import { SocialLink } from "@/components/ui/SocialLink";
 import { personalInfo, socialLinks } from "@/data/personal";
 
 export function Hero() {
+  const [isHovered, setIsHovered] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: MouseEvent<HTMLElement>) => {
+    if (!heroRef.current || !glowRef.current) return;
+    
+    // Performance optimization: Using direct DOM manipulation instead of state 
+    // to prevent continuous re-rendering of the entire Hero component on every mouse move.
+    requestAnimationFrame(() => {
+      const rect = heroRef.current!.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      glowRef.current!.style.background = `
+        radial-gradient(150px circle at ${x}px ${y}px, rgba(56, 189, 248, 0.15), transparent 60%),
+        radial-gradient(400px circle at ${x}px ${y}px, rgba(56, 189, 248, 0.05), transparent 80%)
+      `;
+    });
+  };
+
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center overflow-hidden bg-[var(--color-bg-primary)]"
+      ref={heroRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative min-h-screen flex items-center overflow-hidden bg-[var(--color-bg-primary)] group"
       aria-label="Perkenalan"
     >
+      {/* ── Electric Glow Effect ── */}
+      <div 
+        ref={glowRef}
+        className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-500 ease-out"
+        style={{
+          opacity: isHovered ? 1 : 0,
+        }}
+      />
+
       {/* ── Subtle grid decoration ── */}
       <div
         className="absolute inset-0 pointer-events-none"
