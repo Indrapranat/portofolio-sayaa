@@ -38,7 +38,7 @@ export function Skills() {
                 {catSkills.map((skill) => (
                   <div key={skill.name} className="flex flex-col items-center gap-2 group cursor-pointer" title={skill.name}>
                     <div className="flex items-center justify-center w-12 h-12 sm:w-[4.5rem] sm:h-[4.5rem] rounded-xl bg-[#0f1115] border border-white/5 shadow-inner transition-transform duration-300 group-hover:scale-110 group-hover:shadow-[var(--shadow-hover)]">
-                      <i className={`${skill.icon} colored text-[2rem] sm:text-5xl drop-shadow-sm`}></i>
+                      <i className={`${skill.icon} colored text-[2rem] sm:text-5xl drop-shadow-sm ${skill.name === 'Next.js' ? 'bg-white rounded-full' : ''}`}></i>
                     </div>
                   </div>
                 ))}

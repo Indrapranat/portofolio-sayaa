@@ -10,7 +10,7 @@ export const personalInfo: PersonalInfo = {
     "Dengan perhatian tinggi pada detail UI/UX, performa, dan maintainability kode, saya menghadirkan pengalaman end-to-end yang solid — dari arsitektur database hingga animasi micro-interaction yang halus di frontend.",
   ],
   location: "Makassar, Indonesia",
-  email: "indra7dev@gmail.com",
+  email: "indrapranata954@gmail.com",
   // avatarUrl: "/images/profile/avatar.jpg",
   // resumeUrl: "/resume.pdf",
 };
@@ -18,17 +18,12 @@ export const personalInfo: PersonalInfo = {
 export const socialLinks: SocialLink[] = [
   {
     platform: "GitHub",
-    url: "https://github.com/indra7dev",
+    url: "https://github.com/Indrapranat",
     icon: "Github",
   },
   {
     platform: "LinkedIn",
-    url: "https://linkedin.com/in/indra7dev",
+    url: "https://www.linkedin.com/in/indra-pranata-a44952406",
     icon: "Linkedin",
-  },
-  {
-    platform: "Twitter",
-    url: "https://twitter.com/indra7dev",
-    icon: "Twitter",
   },
 ];
