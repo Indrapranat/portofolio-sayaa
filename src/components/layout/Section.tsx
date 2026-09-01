@@ -1,3 +1,8 @@
+/* ============================================================
+   Section — Studio Teknis Modern
+   Generous vertical whitespace, left-aligned section eyebrow,
+   thin 1px divider accent below heading.
+   ============================================================ */
 import { Container } from "./Container";
 
 interface SectionProps {
@@ -18,24 +23,28 @@ export function Section({
   return (
     <section
       id={id}
-      className={`py-20 lg:py-28 ${className}`}
+      className={`py-24 lg:py-32 animate-on-scroll ${className}`}
       aria-labelledby={title ? `${id}-heading` : undefined}
     >
       <Container>
         {title && (
-          <div className="mb-12 lg:mb-16 text-center">
+          <div className="mb-14 lg:mb-18">
             <h2
               id={`${id}-heading`}
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--color-text-primary)]"
+              className="text-headline-lg font-display text-[var(--color-text-primary)]"
             >
               {title}
             </h2>
             {subtitle && (
-              <p className="mt-4 max-w-2xl mx-auto text-lg text-[var(--color-text-secondary)]">
+              <p className="mt-3 text-body-md text-[var(--color-text-secondary)] max-w-xl">
                 {subtitle}
               </p>
             )}
-            <div className="mt-6 mx-auto h-1 w-16 rounded-full bg-[var(--color-accent)]" />
+            {/* Thin accent line — 40px, 1px */}
+            <div
+              className="mt-5 h-px w-10 bg-[var(--color-text-primary)]"
+              aria-hidden="true"
+            />
           </div>
         )}
         {children}

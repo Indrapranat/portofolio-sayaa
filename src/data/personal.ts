@@ -1,15 +1,16 @@
 import { PersonalInfo, SocialLink } from "@/types";
 
 export const personalInfo: PersonalInfo = {
-  name: "Your Name",
+  name: "Indra Pranata",
   title: "Full-Stack Developer",
-  tagline: "Building modern web experiences with clean code and creative solutions.",
+  tagline:
+    "Membangun aplikasi web modern yang cepat, accessible, dan scalable — dari ideasi hingga produksi.",
   about: [
-    "I am a passionate full-stack developer with experience in building modern web applications. I specialize in creating performant, accessible, and visually appealing digital experiences.",
-    "With a strong foundation in both frontend and backend technologies, I deliver end-to-end solutions that solve real problems and delight users.",
+    "Saya seorang full-stack developer yang bersemangat membangun solusi digital yang tidak hanya fungsional, tetapi juga terasa premium bagi penggunanya. Saya berspesialisasi dalam ekosistem JavaScript/TypeScript modern (Next.js, React) dan PHP (Laravel).",
+    "Dengan perhatian tinggi pada detail UI/UX, performa, dan maintainability kode, saya menghadirkan pengalaman end-to-end yang solid — dari arsitektur database hingga animasi micro-interaction yang halus di frontend.",
   ],
-  location: "Indonesia",
-  email: "your.email@example.com",
+  location: "Makassar, Indonesia",
+  email: "indra7dev@gmail.com",
   // avatarUrl: "/images/profile/avatar.jpg",
   // resumeUrl: "/resume.pdf",
 };
@@ -17,17 +18,17 @@ export const personalInfo: PersonalInfo = {
 export const socialLinks: SocialLink[] = [
   {
     platform: "GitHub",
-    url: "https://github.com/yourusername",
+    url: "https://github.com/indra7dev",
     icon: "Github",
   },
   {
     platform: "LinkedIn",
-    url: "https://linkedin.com/in/yourusername",
+    url: "https://linkedin.com/in/indra7dev",
     icon: "Linkedin",
   },
   {
     platform: "Twitter",
-    url: "https://twitter.com/yourusername",
+    url: "https://twitter.com/indra7dev",
     icon: "Twitter",
   },
 ];

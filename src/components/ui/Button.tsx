@@ -1,4 +1,7 @@
-import { ArrowRight } from "lucide-react";
+/* ============================================================
+   Button — Studio Teknis Modern
+   Primary: Navy solid | Secondary: bordered | Ghost: text only
+   ============================================================ */
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -21,42 +24,45 @@ export function Button({
   className = "",
   onClick,
 }: ButtonProps) {
-  const variants = {
+  const variants: Record<string, string> = {
     primary:
-      "bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)] shadow-lg shadow-[var(--color-accent)]/20 hover:shadow-[var(--color-accent)]/30",
+      "bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)]",
     secondary:
-      "bg-white/5 text-[var(--color-text-primary)] border border-[var(--color-border)] hover:bg-white/10 hover:border-[var(--color-border-hover)]",
+      "bg-transparent text-[var(--color-text-primary)] border border-[var(--color-border)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-bg-secondary)]",
     ghost:
-      "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-white/5",
+      "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
   };
 
-  const sizes = {
-    sm: "px-4 py-2 text-sm",
-    md: "px-6 py-2.5 text-sm",
-    lg: "px-8 py-3 text-base",
+  const sizes: Record<string, string> = {
+    sm: "px-4 py-2 text-xs",
+    md: "px-5 py-2.5 text-sm",
+    lg: "px-7 py-3 text-sm",
   };
 
-  const baseClasses = `inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 ${variants[variant]} ${sizes[size]} ${className}`;
+  const base = [
+    "inline-flex items-center justify-center gap-2 font-medium",
+    "rounded-[var(--radius-sm)] transition-all duration-200",
+    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]",
+    variants[variant],
+    sizes[size],
+    className,
+  ].join(" ");
 
   if (href) {
     return (
       <a
         href={href}
-        className={baseClasses}
-        {...(external
-          ? { target: "_blank", rel: "noopener noreferrer" }
-          : {})}
+        className={base}
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {children}
-        {icon && <ArrowRight size={16} />}
       </a>
     );
   }
 
   return (
-    <button className={baseClasses} onClick={onClick}>
+    <button className={base} onClick={onClick}>
       {children}
-      {icon && <ArrowRight size={16} />}
     </button>
   );
 }

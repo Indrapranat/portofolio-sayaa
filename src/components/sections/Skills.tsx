@@ -1,37 +1,42 @@
+/* ============================================================
+   Skills Section — Studio Teknis Modern
+   Three category cards with badge chips inside.
+   ============================================================ */
 import { Section } from "@/components/layout/Section";
 import { Badge } from "@/components/ui/Badge";
 import { skills } from "@/data/skills";
 
-export function Skills() {
-  const categories = [
-    { key: "frontend" as const, label: "Frontend" },
-    { key: "backend" as const, label: "Backend" },
-    { key: "tools" as const, label: "Tools & Platforms" },
-  ];
+const categories = [
+  { key: "frontend" as const, label: "Frontend", emoji: "🎨" },
+  { key: "backend" as const, label: "Backend", emoji: "⚙️" },
+  { key: "tools" as const, label: "Tools & Platform", emoji: "🛠" },
+];
 
+export function Skills() {
   return (
     <Section
       id="skills"
-      title="Skills & Technologies"
-      subtitle="Technologies I work with"
-      className="bg-[var(--color-bg-secondary)]"
+      title="Keahlian & Teknologi"
+      subtitle="Teknologi yang saya gunakan sehari-hari"
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-        {categories.map((category) => {
-          const categorySkills = skills.filter(
-            (s) => s.category === category.key
-          );
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {categories.map((cat) => {
+          const catSkills = skills.filter((s) => s.category === cat.key);
           return (
             <div
-              key={category.key}
-              className="p-6 sm:p-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)]"
+              key={cat.key}
+              className="p-6 sm:p-8 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-card)] hover:border-[var(--color-border-hover)] transition-colors duration-200"
+              style={{ boxShadow: "var(--shadow-card)" }}
             >
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
-                {category.label}
-              </h3>
+              <div className="flex items-center gap-2.5 mb-5">
+                <span className="text-xl" aria-hidden="true">{cat.emoji}</span>
+                <h3 className="text-label-sm font-display text-[var(--color-text-primary)] uppercase tracking-widest">
+                  {cat.label}
+                </h3>
+              </div>
               <div className="flex flex-wrap gap-2">
-                {categorySkills.map((skill) => (
-                  <Badge key={skill.name} variant="accent">
+                {catSkills.map((skill) => (
+                  <Badge key={skill.name} variant="default">
                     {skill.name}
                   </Badge>
                 ))}

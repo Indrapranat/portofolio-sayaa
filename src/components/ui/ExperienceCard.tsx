@@ -1,56 +1,53 @@
-import { Briefcase } from "lucide-react";
+/* ============================================================
+   ExperienceCard — Studio Teknis Modern
+   Timeline list-item style:
+   Left column: date (muted) | Right column: content
+   Separated by 1px horizontal dividers.
+   ============================================================ */
 import { getDateRange } from "@/lib/utils";
 import type { Experience } from "@/types";
 
 interface ExperienceCardProps {
   experience: Experience;
+  isLast?: boolean;
 }
 
-export function ExperienceCard({ experience }: ExperienceCardProps) {
+export function ExperienceCard({ experience, isLast = false }: ExperienceCardProps) {
   return (
-    <div className="group relative flex gap-4 sm:gap-6">
-      {/* Timeline dot & line */}
-      <div className="relative flex flex-col items-center">
-        <div className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent-muted)] shrink-0">
-          <Briefcase size={16} className="text-[var(--color-accent)]" />
-        </div>
-        <div className="w-px flex-1 bg-[var(--color-border)] mt-2" />
+    <div
+      className={[
+        "grid grid-cols-1 sm:grid-cols-[180px_1fr] gap-4 sm:gap-8 py-7",
+        !isLast ? "border-b border-[var(--color-border)]" : "",
+      ].join(" ")}
+    >
+      {/* ── Date column ── */}
+      <div className="sm:pt-0.5">
+        <p className="text-label-sm text-[var(--color-text-muted)]">
+          {getDateRange(experience.startDate, experience.endDate, experience.current)}
+        </p>
+        {experience.current && (
+          <span className="inline-flex items-center mt-1.5 gap-1 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-[var(--radius-xs)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Sekarang
+          </span>
+        )}
       </div>
 
-      {/* Content */}
-      <div className="pb-10">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
-            {experience.role}
-          </h3>
-          {experience.current && (
-            <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-green-500/15 text-green-400 border border-green-500/20">
-              Current
-            </span>
-          )}
-        </div>
-
-        <p className="text-sm font-medium text-[var(--color-accent)]">
+      {/* ── Content column ── */}
+      <div>
+        <h3 className="text-headline-md font-display text-[var(--color-text-primary)]">
+          {experience.role}
+        </h3>
+        <p className="mt-0.5 text-label-sm text-[var(--color-text-secondary)]">
           {experience.company}
         </p>
-
-        <p className="mt-1 text-xs text-[var(--color-text-muted)]">
-          {getDateRange(
-            experience.startDate,
-            experience.endDate,
-            experience.current
-          )}
-        </p>
-
         <ul className="mt-3 flex flex-col gap-1.5">
           {experience.description.map((desc, i) => (
             <li
               key={i}
-              className="text-sm text-[var(--color-text-secondary)] flex gap-2"
+              className="flex gap-2 text-body-md text-[var(--color-text-secondary)]"
             >
-              <span className="text-[var(--color-accent)] shrink-0 mt-1.5">
-                •
-              </span>
+              <span className="shrink-0 mt-[0.35rem] w-1 h-1 rounded-full bg-[var(--color-text-muted)]" />
               {desc}
             </li>
           ))}

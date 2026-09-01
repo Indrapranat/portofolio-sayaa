@@ -1,8 +1,22 @@
-import { Globe, Layout, Server, Palette, Briefcase, Code, Monitor, Database, Smartphone } from "lucide-react";
+/* ============================================================
+   ServiceCard — Studio Teknis Modern
+   Clean card with icon background (muted accent), headline,
+   and description. Hover: border darkens slightly.
+   ============================================================ */
+import {
+  Globe,
+  Layout,
+  Server,
+  Palette,
+  Briefcase,
+  Code,
+  Monitor,
+  Database,
+  Smartphone,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { Service } from "@/types";
 
-// Map service icon names to lucide components
 const iconMap: Record<string, LucideIcon> = {
   Globe,
   Layout,
@@ -20,22 +34,27 @@ interface ServiceCardProps {
 }
 
 export function ServiceCard({ service }: ServiceCardProps) {
-  const IconComponent = iconMap[service.icon] || Briefcase;
+  const IconComponent = iconMap[service.icon] ?? Briefcase;
 
   return (
-    <div className="group relative p-6 sm:p-8 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] transition-all duration-300 hover:border-[var(--color-border-hover)] hover:bg-[var(--color-bg-card-hover)] hover:-translate-y-1">
-      <div className="mb-4 inline-flex p-3 rounded-lg bg-[var(--color-accent-muted)]">
-        <IconComponent
-          size={24}
-          className="text-[var(--color-accent)]"
-        />
+    <div
+      className={[
+        "group p-6 sm:p-7 rounded-[var(--radius-lg)]",
+        "border border-[var(--color-border)] bg-[var(--color-bg-card)]",
+        "hover:border-[var(--color-border-hover)] transition-all duration-250",
+      ].join(" ")}
+      style={{ boxShadow: "var(--shadow-card)" }}
+    >
+      {/* Icon */}
+      <div className="mb-5 inline-flex p-2.5 rounded-[var(--radius-md)] bg-[var(--color-bg-tertiary)]">
+        <IconComponent size={20} className="text-[var(--color-text-primary)]" />
       </div>
 
-      <h3 className="text-lg font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-accent)] transition-colors duration-200">
+      <h3 className="text-headline-md font-display text-[var(--color-text-primary)]">
         {service.title}
       </h3>
 
-      <p className="mt-2 text-sm text-[var(--color-text-secondary)] leading-relaxed">
+      <p className="mt-2 text-body-md text-[var(--color-text-secondary)] leading-relaxed">
         {service.description}
       </p>
     </div>

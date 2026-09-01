@@ -1,3 +1,8 @@
+/* ============================================================
+   Header — Studio Teknis Modern design system
+   Sticky, transparent-on-hero → solid+blur on scroll.
+   Active section tracking via IntersectionObserver.
+   ============================================================ */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -6,22 +11,21 @@ import { Container } from "./Container";
 import { MobileNav } from "./MobileNav";
 import { navItems } from "@/data/navigation";
 import { personalInfo } from "@/data/personal";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
-  // Handle scroll for header background
+  /* ── Scroll detection ── */
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 60);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Intersection Observer for active section
+  /* ── Intersection Observer for active nav item ── */
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
 
@@ -32,9 +36,7 @@ export function Header() {
 
       const observer = new IntersectionObserver(
         ([entry]) => {
-          if (entry.isIntersecting) {
-            setActiveSection(item.href);
-          }
+          if (entry.isIntersecting) setActiveSection(item.href);
         },
         { rootMargin: "-50% 0px -50% 0px" }
       );
@@ -43,84 +45,93 @@ export function Header() {
       observers.push(observer);
     });
 
-    return () => observers.forEach((obs) => obs.disconnect());
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
-  // Lock body scroll when mobile nav is open
+  /* ── Body scroll lock when mobile nav open ── */
   useEffect(() => {
-    if (isMobileOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = isMobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [isMobileOpen]);
+
+  const firstName = personalInfo.name.split(" ")[0];
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={[
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           isScrolled
-            ? "bg-[var(--color-bg-primary)]/80 backdrop-blur-xl border-b border-[var(--color-border)] shadow-lg shadow-black/5"
-            : "bg-transparent"
-        }`}
+            ? "bg-[var(--color-bg-primary)]/90 backdrop-blur-xl border-b border-[var(--color-border)] shadow-[0_1px_0_0_var(--color-border)]"
+            : "bg-transparent",
+        ].join(" ")}
         role="banner"
       >
         <Container>
           <nav
             className="flex items-center justify-between h-16 lg:h-20"
             role="navigation"
-            aria-label="Main navigation"
+            aria-label="Navigasi utama"
           >
-            {/* Logo / Name */}
+            {/* ── Wordmark / Logo ── */}
             <a
               href="#"
-              className="text-lg font-bold tracking-tight text-[var(--color-text-primary)] hover:text-[var(--color-accent)] transition-colors duration-200"
-              aria-label={`${personalInfo.name} — Home`}
+              className="group flex items-center gap-0.5 text-sm font-semibold tracking-tight text-[var(--color-text-primary)] hover:text-[var(--color-accent)] transition-colors duration-200 font-display"
+              aria-label={`${personalInfo.name} — Beranda`}
             >
-              <span className="text-[var(--color-accent)]">&lt;</span>
-              {personalInfo.name.split(" ")[0]}
-              <span className="text-[var(--color-accent)]"> /&gt;</span>
+              <span className="text-[var(--color-accent)] font-mono text-xs mr-0.5 opacity-60">&lt;</span>
+              <span>{firstName}</span>
+              <span className="text-[var(--color-accent)] font-mono text-xs ml-0.5 opacity-60">/&gt;</span>
             </a>
 
-            {/* Desktop Nav */}
-            <ul className="hidden lg:flex items-center gap-1">
-              {navItems.map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      activeSection === item.href
-                        ? "text-[var(--color-accent)] bg-[var(--color-accent-muted)]"
-                        : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-white/5"
-                    }`}
-                    aria-current={
-                      activeSection === item.href ? "true" : undefined
-                    }
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
+            {/* ── Desktop Nav ── */}
+            <ul className="hidden lg:flex items-center gap-1" role="list">
+              {navItems.map((item) => {
+                const isActive = activeSection === item.href;
+                return (
+                  <li key={item.href}>
+                    <a
+                      href={item.href}
+                      className={[
+                        "text-label-sm px-4 py-2 rounded-[var(--radius-sm)] transition-all duration-200",
+                        isActive
+                          ? "text-[var(--color-text-primary)] bg-[var(--color-bg-tertiary)]"
+                          : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
+                      ].join(" ")}
+                      aria-current={isActive ? "true" : undefined}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
 
-            {/* Mobile Menu Button */}
+            {/* ── Desktop CTA & Theme ── */}
+            <div className="hidden lg:flex items-center gap-4">
+              <ThemeToggle />
+              <a
+                href="#contact"
+                className="inline-flex items-center px-5 py-2 text-sm font-medium rounded-[var(--radius-sm)] bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)] transition-colors duration-200"
+              >
+                Hubungi Saya
+              </a>
+            </div>
+
+            {/* ── Mobile Hamburger ── */}
             <button
-              className="lg:hidden p-2 rounded-lg text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-white/5 transition-colors"
+              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-[var(--radius-sm)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)] transition-colors"
               onClick={() => setIsMobileOpen(!isMobileOpen)}
               aria-expanded={isMobileOpen}
               aria-controls="mobile-nav"
-              aria-label={isMobileOpen ? "Close menu" : "Open menu"}
+              aria-label={isMobileOpen ? "Tutup menu" : "Buka menu"}
             >
-              {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </nav>
         </Container>
       </header>
 
-      {/* Mobile Navigation */}
       <MobileNav
         isOpen={isMobileOpen}
         onClose={() => setIsMobileOpen(false)}

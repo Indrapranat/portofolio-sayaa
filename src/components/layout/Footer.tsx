@@ -1,3 +1,7 @@
+/* ============================================================
+   Footer — Studio Teknis Modern
+   Three-column, 1px top border, minimal and clean.
+   ============================================================ */
 import { ArrowUp } from "lucide-react";
 import { Container } from "./Container";
 import { personalInfo, socialLinks } from "@/data/personal";
@@ -6,6 +10,7 @@ import { SocialLink } from "@/components/ui/SocialLink";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const firstName = personalInfo.name.split(" ")[0];
 
   return (
     <footer
@@ -13,31 +18,35 @@ export function Footer() {
       role="contentinfo"
     >
       <Container>
-        <div className="py-12 lg:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Brand */}
+        <div className="py-12 lg:py-16 animate-on-scroll">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+
+            {/* ── Brand ── */}
             <div>
-              <p className="text-lg font-bold text-[var(--color-text-primary)]">
-                <span className="text-[var(--color-accent)]">&lt;</span>
-                {personalInfo.name.split(" ")[0]}
-                <span className="text-[var(--color-accent)]"> /&gt;</span>
+              <p className="font-display text-sm font-semibold text-[var(--color-text-primary)] tracking-tight">
+                <span className="font-mono text-xs opacity-50">&lt;</span>
+                {firstName}
+                <span className="font-mono text-xs opacity-50"> /&gt;</span>
               </p>
-              <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+              <p className="mt-2 text-body-md text-[var(--color-text-secondary)]">
                 {personalInfo.title}
+              </p>
+              <p className="mt-1 flex items-center gap-1 text-label-sm text-[var(--color-text-muted)]">
+                {personalInfo.location}
               </p>
             </div>
 
-            {/* Quick Links */}
+            {/* ── Quick Links ── */}
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-4">
-                Quick Links
+              <h3 className="text-label-sm text-[var(--color-text-muted)] uppercase tracking-wider mb-4">
+                Navigasi
               </h3>
-              <ul className="flex flex-col gap-2">
-                {navItems.slice(0, 4).map((item) => (
+              <ul className="flex flex-col gap-2.5">
+                {navItems.slice(0, 5).map((item) => (
                   <li key={item.href}>
                     <a
                       href={item.href}
-                      className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors duration-200"
+                      className="text-body-md text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors duration-200"
                     >
                       {item.label}
                     </a>
@@ -46,32 +55,31 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Social */}
+            {/* ── Social ── */}
             <div>
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-muted)] mb-4">
-                Connect
+              <h3 className="text-label-sm text-[var(--color-text-muted)] uppercase tracking-wider mb-4">
+                Terhubung
               </h3>
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 {socialLinks.map((link) => (
-                  <SocialLink key={link.platform} link={link} />
+                  <SocialLink key={link.platform} link={link} size={18} />
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Bottom bar */}
+          {/* ── Bottom bar ── */}
           <div className="mt-12 pt-8 border-t border-[var(--color-border)] flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-[var(--color-text-muted)]">
+            <p className="text-label-sm text-[var(--color-text-muted)]">
               © {currentYear} {personalInfo.name}. All rights reserved.
             </p>
-
             <a
               href="#"
-              className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors duration-200"
-              aria-label="Back to top"
+              className="flex items-center gap-1.5 text-label-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors duration-200"
+              aria-label="Kembali ke atas"
             >
-              Back to top
-              <ArrowUp size={14} />
+              Kembali ke atas
+              <ArrowUp size={13} />
             </a>
           </div>
         </div>
