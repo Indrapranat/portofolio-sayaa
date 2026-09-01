@@ -1,26 +1,23 @@
 import { Skill } from "@/types";
 
 export const skills: Skill[] = [
-  // Frontend
-  { name: "React", category: "frontend" },
-  { name: "Next.js", category: "frontend" },
-  { name: "TypeScript", category: "frontend" },
-  { name: "JavaScript", category: "frontend" },
-  { name: "Tailwind CSS", category: "frontend" },
-  { name: "HTML5", category: "frontend" },
-  { name: "CSS3", category: "frontend" },
-
   // Backend
-  { name: "Node.js", category: "backend" },
-  { name: "Express", category: "backend" },
-  { name: "PostgreSQL", category: "backend" },
-  { name: "MySQL", category: "backend" },
-  { name: "REST API", category: "backend" },
+  { name: "PHP", category: "backend", icon: "devicon-php-plain" },
+  { name: "Laravel", category: "backend", icon: "devicon-laravel-original" },
+  { name: "MySQL", category: "backend", icon: "devicon-mysql-original" },
+  { name: "PostgreSQL", category: "backend", icon: "devicon-postgresql-plain" },
+  
+  // Frontend
+  { name: "HTML5", category: "frontend", icon: "devicon-html5-plain" },
+  { name: "CSS3", category: "frontend", icon: "devicon-css3-plain" },
+  { name: "JavaScript", category: "frontend", icon: "devicon-javascript-plain" },
+  { name: "React", category: "frontend", icon: "devicon-react-original" },
+  { name: "Next.js", category: "frontend", icon: "devicon-nextjs-plain" },
+  { name: "Tailwind", category: "frontend", icon: "devicon-tailwindcss-original" },
 
-  // Tools
-  { name: "Git", category: "tools" },
-  { name: "VS Code", category: "tools" },
-  { name: "Figma", category: "tools" },
-  { name: "Vercel", category: "tools" },
-  { name: "Docker", category: "tools" },
+  // Tools & Others
+  { name: "Git", category: "tools", icon: "devicon-git-plain" },
+  { name: "Figma", category: "tools", icon: "devicon-figma-plain" },
+  { name: "Python", category: "tools", icon: "devicon-python-plain" },
+  { name: "Flutter", category: "tools", icon: "devicon-flutter-plain" },
 ];
