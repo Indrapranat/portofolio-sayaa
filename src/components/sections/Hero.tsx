@@ -79,7 +79,7 @@ export function Hero() {
             {personalInfo.name}
           </h1>
 
-          {/* ── Title ── */}
+          {/* ── Jabatan ── */}
           <p className="mt-4 text-headline-md font-display text-[var(--color-text-secondary)]">
             {personalInfo.title}
           </p>
