@@ -1,10 +1,13 @@
+﻿"use client";
+
 /* ============================================================
    ProjectCard — Studio Teknis Modern
    White card, 1px border, ultra-low shadow.
    Hover: border strengthens, shadow lifts slightly.
    ============================================================ */
+import { useState } from "react";
 import Image from "next/image";
-import { ExternalLink, CodeXml, Eye, Images } from "lucide-react";
+import { ExternalLink, CodeXml, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { Badge } from "./Badge";
 import type { Project } from "@/types";
 
@@ -20,6 +23,27 @@ const statusLabel: Record<string, string> = {
 };
 
 export function ProjectCard({ project, onClick }: ProjectCardProps) {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  const images =
+    project.screenshots && project.screenshots.length > 0
+      ? project.screenshots
+      : project.imageUrl
+      ? [project.imageUrl]
+      : [];
+
+  const handleCardPrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (images.length <= 1) return;
+    setActiveSlide((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const handleCardNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (images.length <= 1) return;
+    setActiveSlide((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
   return (
     <article
       onClick={onClick}
@@ -41,36 +65,78 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]",
       ].join(" ")}
     >
-      {/* ── Image Placeholder with Gallery Hint ── */}
-      {project.imageUrl && (
-        <div className="relative aspect-video bg-[var(--color-bg-tertiary)] overflow-hidden">
-          <Image 
-            src={project.imageUrl} 
-            alt={project.title}
+      {/* ── Image Container (Crisp, No Blur) ── */}
+      {images.length > 0 && (
+        <div className="relative aspect-video bg-zinc-950 overflow-hidden select-none">
+          <Image
+            key={images[activeSlide]}
+            src={images[activeSlide]}
+            alt={`${project.title} - Gambar ${activeSlide + 1}`}
             fill
+            unoptimized
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" 
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
+
+          {/* Status Badge */}
           {project.status && (
             <div className="absolute top-3 right-3 z-10">
-              <Badge variant="default" className="shadow-sm backdrop-blur-sm bg-black/50 text-white border-0">
+              <Badge
+                variant="default"
+                className="shadow-sm bg-black/75 text-white border border-white/20"
+              >
                 {statusLabel[project.status] ?? project.status}
               </Badge>
             </div>
           )}
 
-          {/* Badge jumlah gambar galeri */}
-          {project.screenshots && project.screenshots.length > 1 && (
-            <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-black/60 text-white backdrop-blur-sm">
-              <Images size={13} />
-              <span>{project.screenshots.length} Foto</span>
-            </div>
+          {/* Slider Controls on Card Hover (Jika ada lebih dari 1 gambar) */}
+          {images.length > 1 && (
+            <>
+              {/* Counter Badge */}
+              <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-black/75 text-white border border-white/20">
+                <span>{activeSlide + 1} / {images.length} Foto</span>
+              </div>
+
+              {/* Navigasi Panah Cepat di Kartu */}
+              <button
+                type="button"
+                onClick={handleCardPrev}
+                aria-label="Foto sebelumnya"
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-1.5 rounded-full bg-black/70 hover:bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 border border-white/20 shadow-md cursor-pointer"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={handleCardNext}
+                aria-label="Foto berikutnya"
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-1.5 rounded-full bg-black/70 hover:bg-black text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 border border-white/20 shadow-md cursor-pointer"
+              >
+                <ChevronRight size={16} />
+              </button>
+
+              {/* Mini Dot Indicators */}
+              <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 px-2 py-1 rounded-full bg-black/60">
+                {images.map((_, idx) => (
+                  <span
+                    key={idx}
+                    className={[
+                      "h-1.5 rounded-full transition-all duration-200",
+                      activeSlide === idx ? "w-4 bg-white" : "w-1.5 bg-white/40",
+                    ].join(" ")}
+                  />
+                ))}
+              </div>
+            </>
           )}
 
-          {/* Hover overlay hint */}
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-2 text-white text-xs font-semibold backdrop-blur-[2px]">
-            <Eye size={16} />
-            <span>Klik untuk Detail & Slider</span>
+          {/* Hint Overlay (Tanpa Blur agar tidak buram) */}
+          <div className="absolute bottom-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+            <span className="flex items-center gap-1 px-2 py-1 rounded text-[11px] font-semibold bg-black/80 text-white border border-white/10 shadow-sm">
+              <Eye size={12} />
+              Buka Detail
+            </span>
           </div>
         </div>
       )}

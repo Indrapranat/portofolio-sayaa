@@ -1,7 +1,7 @@
 ﻿"use client";
 
 /* ============================================================
-   ProjectModal — Detail Proyek & Galeri Slider 3 Gambar
+   ProjectModal — Detail Proyek & Galeri Slider Gambar Tajam
    ============================================================ */
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
@@ -32,6 +32,7 @@ const statusLabel: Record<string, string> = {
 
 export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
 
   // Reset slide index saat project berganti
   useEffect(() => {
@@ -55,7 +56,21 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
     setCurrentSlide((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   }, [images.length]);
 
-  // Keyboard navigation (Escape, ArrowLeft, ArrowRight) & body scroll lock
+  // Touch swipe handling
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStart - touchEnd;
+    if (diff > 40) handleNext();
+    else if (diff < -40) handlePrev();
+    setTouchStart(null);
+  };
+
+  // Keyboard navigation & body scroll lock
   useEffect(() => {
     if (!project) return;
 
@@ -82,7 +97,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="project-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-6 bg-black/70 backdrop-blur-md animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/80 backdrop-blur-sm animate-fadeIn"
       onClick={onClose}
     >
       <div
@@ -91,82 +106,120 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
       >
         {/* ── Tombol Close ── */}
         <button
+          type="button"
           onClick={onClose}
           aria-label="Tutup modal"
-          className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/60 hover:bg-black/80 text-white/90 hover:text-white transition-colors backdrop-blur-sm shadow-md"
+          className="absolute top-3 right-3 z-30 p-2.5 rounded-full bg-black/75 hover:bg-black text-white transition-colors backdrop-blur-md shadow-lg border border-white/20"
         >
-          <X size={20} />
+          <X size={18} />
         </button>
 
         {/* ── Konten Scrollable ── */}
         <div className="overflow-y-auto flex-1 custom-scrollbar">
-          {/* ── Image Slider (3 Gambar) ── */}
+          {/* ── Image Slider (Tajam & Interaktif) ── */}
           {images.length > 0 && (
-            <div className="relative aspect-video w-full bg-[var(--color-bg-tertiary)] select-none group">
-              <Image
-                src={images[currentSlide]}
-                alt={`${project.title} - Gambar ${currentSlide + 1}`}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 900px"
-                className="object-cover transition-opacity duration-300"
-              />
+            <div className="relative w-full bg-zinc-950 select-none">
+              {/* Container Tampilan Gambar (object-contain agar resolusi 100% tajam & tidak terpotong) */}
+              <div
+                className="relative w-full h-[260px] sm:h-[380px] md:h-[460px] flex items-center justify-center overflow-hidden"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+              >
+                <Image
+                  key={images[currentSlide]}
+                  src={images[currentSlide]}
+                  alt={`${project.title} - Gambar ${currentSlide + 1}`}
+                  fill
+                  priority
+                  unoptimized
+                  className="object-contain"
+                />
 
-              {/* Gradient overlay di atas & bawah */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+                {/* Zona Klik Kiri & Kanan pada Gambar */}
+                {images.length > 1 && (
+                  <>
+                    <div
+                      onClick={handlePrev}
+                      className="absolute inset-y-0 left-0 w-1/3 cursor-pointer z-10"
+                      title="Klik untuk ke foto sebelumnya"
+                    />
+                    <div
+                      onClick={handleNext}
+                      className="absolute inset-y-0 right-0 w-1/3 cursor-pointer z-10"
+                      title="Klik untuk ke foto berikutnya"
+                    />
+                  </>
+                )}
 
-              {/* Badge Slide Counter & Info */}
-              <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-black/60 text-white backdrop-blur-md shadow-sm">
-                  {currentSlide + 1} / {images.length} Gambar
-                </span>
-                {project.status && (
-                  <Badge variant="default" className="bg-black/60 text-white backdrop-blur-md border border-white/20">
-                    {statusLabel[project.status] ?? project.status}
-                  </Badge>
+                {/* Badge Info Slide Counter */}
+                <div className="absolute top-3 left-3 z-20 flex items-center gap-2 pointer-events-none">
+                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-black/75 text-white backdrop-blur-md border border-white/20 shadow-md">
+                    {currentSlide + 1} / {images.length} Gambar
+                  </span>
+                  {project.status && (
+                    <Badge
+                      variant="default"
+                      className="bg-black/75 text-white backdrop-blur-md border border-white/20"
+                    >
+                      {statusLabel[project.status] ?? project.status}
+                    </Badge>
+                  )}
+                </div>
+
+                {/* Tombol Panah Navigasi Kiri & Kanan */}
+                {images.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePrev();
+                      }}
+                      aria-label="Gambar sebelumnya"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/75 hover:bg-black text-white transition-all transform hover:scale-110 border border-white/20 shadow-xl cursor-pointer"
+                    >
+                      <ChevronLeft size={22} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNext();
+                      }}
+                      aria-label="Gambar berikutnya"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/75 hover:bg-black text-white transition-all transform hover:scale-110 border border-white/20 shadow-xl cursor-pointer"
+                    >
+                      <ChevronRight size={22} />
+                    </button>
+                  </>
                 )}
               </div>
 
-              {/* Tombol Navigasi Slider Kiri & Kanan */}
+              {/* ── Thumbnail Bar (Bisa Diklik Langsung untuk Pindah Slide) ── */}
               {images.length > 1 && (
-                <>
-                  <button
-                    onClick={handlePrev}
-                    aria-label="Gambar sebelumnya"
-                    className="absolute left-3 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-black/60 hover:bg-black/90 text-white transition-all transform hover:scale-110 backdrop-blur-sm shadow-lg"
-                  >
-                    <ChevronLeft size={22} />
-                  </button>
-                  <button
-                    onClick={handleNext}
-                    aria-label="Gambar berikutnya"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-full bg-black/60 hover:bg-black/90 text-white transition-all transform hover:scale-110 backdrop-blur-sm shadow-lg"
-                  >
-                    <ChevronRight size={22} />
-                  </button>
-
-                  {/* Dot Indicators */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md">
-                    {images.map((_, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setCurrentSlide(idx)}
-                        aria-label={`Lihat gambar ke-${idx + 1}`}
-                        className={[
-                          "h-2 rounded-full transition-all duration-300",
-                          currentSlide === idx
-                            ? "w-6 bg-white shadow-sm"
-                            : "w-2 bg-white/50 hover:bg-white/80",
-                        ].join(" ")}
-                      />
-                    ))}
-                  </div>
-                </>
+                <div className="flex items-center justify-center gap-3 py-2.5 px-4 bg-black/60 border-t border-white/10 backdrop-blur-sm">
+                  {images.map((imgUrl, idx) => (
+                    <button
+                      type="button"
+                      key={idx}
+                      onClick={() => setCurrentSlide(idx)}
+                      className={[
+                        "relative flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 cursor-pointer",
+                        currentSlide === idx
+                          ? "bg-[var(--color-accent)] text-white shadow-md scale-105"
+                          : "bg-white/10 hover:bg-white/20 text-white/80",
+                      ].join(" ")}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                      <span>Foto {idx + 1}</span>
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
           )}
 
-          {/* ── Detail Proyek ── */}
+          {/* ── Detail Proyek Lengkap ── */}
           <div className="p-6 sm:p-8 space-y-6">
             {/* Header Judul & Role */}
             <div>
@@ -283,8 +336,9 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 </a>
               )}
               <button
+                type="button"
                 onClick={onClose}
-                className="ml-auto px-4 py-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
+                className="ml-auto px-4 py-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer"
               >
                 Tutup
               </button>
